@@ -60,13 +60,17 @@ void loadExec(const char* path)
 
 		fclose(fp);
 		OSD_drawText(3, 1, "LOAD EXEC: OKAY");
+#if !defined(SF2000)
 		printf("[INFO] [FREEINTV] Succeeded loading Executive BIOS from: %s\n", path);		
+#endif
 	}
 	else
 	{
 		OSD_drawText(3, 1, "LOAD EXEC: FAIL");
         OSD_drawTextBG(3, 6, "PUT GROM/EXEC IN SYSTEM DIRECTORY");
+#if !defined(SF2000)
 		printf("[ERROR] [FREEINTV] Failed loading Executive BIOS from: %s\n", path);
+#endif
 	}
 }
 
@@ -86,14 +90,17 @@ void loadGrom(const char* path)
 
 		fclose(fp);
 		OSD_drawText(3, 2, "LOAD GROM: OKAY");
+#if !defined(SF2000)
 		printf("[INFO] [FREEINTV] Succeeded loading Graphics BIOS from: %s\n", path);
-		
+#endif
 	}
 	else
 	{
 		OSD_drawText(3, 2, "LOAD GROM: FAIL");
         OSD_drawTextBG(3, 6, "PUT GROM/EXEC IN SYSTEM DIRECTORY");
+#if !defined(SF2000)
 		printf("[ERROR] [FREEINTV] Failed loading Graphics BIOS from: %s\n", path);
+#endif
 	}
 }
 
