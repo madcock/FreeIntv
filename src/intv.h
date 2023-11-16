@@ -18,7 +18,11 @@
 	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#if !defined(SF2000)
 #define AUDIO_FREQUENCY     44100
+#else
+#define AUDIO_FREQUENCY     22050
+#endif
 
 extern int SR1; // SR1 line for interrupt
 

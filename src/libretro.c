@@ -43,14 +43,24 @@ retro_video_refresh_t Video;
 retro_audio_sample_t Audio;
 retro_audio_sample_batch_t AudioBatch;
 retro_input_poll_t InputPoll;
+#if !defined(SF2000)
 retro_input_state_t InputState;
+#else
+retro_input_state_t xInputState;
+
+#define InputState(a,b,c,d) (xInputState(a,b,c,d)!=0 ? 1 : 0)
+#endif
 
 void retro_set_environment(retro_environment_t fn) { Environ = fn; }
 void retro_set_video_refresh(retro_video_refresh_t fn) { Video = fn; }
 void retro_set_audio_sample(retro_audio_sample_t fn) { Audio = fn; }
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t fn) { AudioBatch = fn; }
 void retro_set_input_poll(retro_input_poll_t fn) { InputPoll = fn; }
+#if !defined(SF2000)
 void retro_set_input_state(retro_input_state_t fn) { InputState = fn; }
+#else
+void retro_set_input_state(retro_input_state_t fn) { xInputState = fn; }
+#endif
 
 struct retro_game_geometry Geometry;
 
@@ -114,6 +124,11 @@ static void Keyboard(bool down, unsigned keycode,
 
 void retro_init(void)
 {
+#if defined(SF2000)
+	int pixelformat = RETRO_PIXEL_FORMAT_XRGB8888;
+	Environ(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &pixelformat);
+#endif
+
 	char execPath[PATH_MAX_LENGTH];
 	char gromPath[PATH_MAX_LENGTH];
 	struct retro_keyboard_callback kb = { Keyboard };
@@ -415,7 +430,9 @@ void retro_get_system_info(struct retro_system_info *info)
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
+#if !defined(SF2000)
 	int pixelformat = RETRO_PIXEL_FORMAT_XRGB8888;
+#endif
 
 	memset(info, 0, sizeof(*info));
 	info->geometry.base_width   = MaxWidth;
@@ -427,7 +444,9 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 	info->timing.fps = DefaultFPS;
 	info->timing.sample_rate = AUDIO_FREQUENCY;
 
+#if !defined(SF2000)
 	Environ(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &pixelformat);
+#endif
 }
 
 
